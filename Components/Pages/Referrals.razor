@@ -17,6 +17,8 @@ else
                 <th>Nr.</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Update</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +28,9 @@ else
                     <td>@(index + 1)</td>
                     <td>@referral.DisplayName</td>
                     <td>@referral.MemberEmail</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => UpdateReferral(referral.Id)">Update</button>
+                    </td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => DeleteReferral(referral.Id)">Delete</button>
                     </td>
@@ -49,6 +54,11 @@ else
     protected void NavigateToAnotherPage()
     {
         NavigationManager.NavigateTo($"referrals/{MemberId}/new", forceLoad: true);
+    }
+
+    protected void UpdateReferral(string referralId)
+    {
+        NavigationManager.NavigateTo($"referrals/{MemberId}/update/{referralId}", forceLoad: true);
     }
 
     protected async void DeleteReferral(string referralId)

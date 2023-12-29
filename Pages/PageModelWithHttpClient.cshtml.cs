@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using ReferralRock.Model;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
@@ -57,13 +58,18 @@ public class PageModelWithHttpClient : PageModel
         }
     }
 
-    public async Task<List<Referral>> GetReferrals(string memberId)
+    public async Task<List<Referral>> GetReferrals(string memberId, string query = null)
     {
         var parameters = new Dictionary<string, string>
-            {
-                    { "programId", _configuration["AppSettings:ProgramId"] },
-                    { "memberId", memberId },
-            };
+        {
+            { "programId", _configuration["AppSettings:ProgramId"] },
+            { "memberId", memberId },
+        };
+
+        if (!string.IsNullOrEmpty(query))
+        {
+            parameters.Add("query", query);
+        }
 
         var queryString = string.Join("&", parameters.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}"));
         var apiUrl = $"api/referrals?{queryString}";
@@ -121,7 +127,7 @@ public class PageModelWithHttpClient : PageModel
     {
         var apiUrl = $"api/referral/remove";
 
-        var queries = new List<Query>();
+        var queries = new List<DeleteQuery>();
         var info = new Info
         {
             primaryInfo = new PrimaryInfo
@@ -130,7 +136,7 @@ public class PageModelWithHttpClient : PageModel
             }
         };
 
-        var queryApi = new Query
+        var queryApi = new DeleteQuery
         {
             query = info
         };
@@ -149,6 +155,48 @@ public class PageModelWithHttpClient : PageModel
             var response = await httpClient.SendAsync(request);
 
             return response.IsSuccessStatusCode;
+        }
+    }
+
+    public async Task<string> UpdateReferral(string referralId, Referral referral)
+    {
+        var apiUrl = $"api/referral/update";
+
+        var queries = new List<UpdateQuery>();
+        var info = new Info
+        {
+            primaryInfo = new PrimaryInfo
+            {
+                referralId = referralId,
+            }
+        };
+
+        var queryApi = new UpdateQuery
+        {
+            query = info,
+            referral = referral
+        };
+
+        queries.Add(queryApi);
+
+        using (var httpClient = CreateClient())
+        {
+            var jsonContent = new StringContent(JsonSerializer.Serialize(queries), Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PostAsync(apiUrl, jsonContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                List<UpdateQueryResponse> apiResponse = JsonSerializer.Deserialize<List<UpdateQueryResponse>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                return apiResponse[0].resultInfo.Message;
+            }
+            else
+            {
+                return null;
+
+            }
         }
     }
 }
