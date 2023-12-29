@@ -1,6 +1,7 @@
 ﻿@using System.Text.Json
 @using ReferralRock.Model
 @inject PageModelWithHttpClient PageModelWithHttpClient
+@inject NavigationManager NavigationManager
 @page "/"
 @attribute [StreamRendering]
 
@@ -19,23 +20,27 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>Nr.</th>
                 <th>Name</th>
                 <th>Email</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var member in members)
+            @foreach (var (member, index) in members.Select((r, i) => (r, i)))
             {
                 <tr>
+                    <td>@(index + 1)</td>
                     <td>@member.DisplayName</td>
                     <td>@member.Email</td>
+                    <td>
+                        <a href="/referrals/@member.Id">View Referrals</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
-@inject IConfiguration Configuration
 @code {
     private List<Member>? members;
 

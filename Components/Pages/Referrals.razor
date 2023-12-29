@@ -1,0 +1,50 @@
+﻿@using System.Text.Json
+@using ReferralRock.Model
+@inject PageModelWithHttpClient PageModelWithHttpClient
+@inject NavigationManager NavigationManager
+@page "/referrals/{memberId}"
+@rendermode InteractiveServer
+
+@if (referrals == null)
+{
+    <p><em>No referrals</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nr.</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var (referral, index) in referrals.Select((r, i) => (r, i)))
+            {
+                <tr>
+                    <td>@(index + 1)</td>
+                    <td>@referral.DisplayName</td>
+                    <td>@referral.MemberEmail</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<button class="btn btn-primary" @onclick="NavigateToAnotherPage">Add new referral</button>
+
+@code {
+    [Parameter] public string MemberId { get; set; }
+    private List<Referral>? referrals;
+
+    protected override async Task OnInitializedAsync()
+    {
+        referrals = await PageModelWithHttpClient.GetReferrals(MemberId);
+    }
+
+    protected void NavigateToAnotherPage()
+    {
+        NavigationManager.NavigateTo($"referrals/{MemberId}/new", forceLoad: true);
+    }
+}

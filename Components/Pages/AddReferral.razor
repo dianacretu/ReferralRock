@@ -1,0 +1,111 @@
+﻿@using System.Text.Json
+@using ReferralRock.Model
+@inject PageModelWithHttpClient PageModelWithHttpClient
+@inject NavigationManager NavigationManager
+@page "/referrals/{memberId}/new"
+@rendermode InteractiveServer
+
+<h1>Counter</h1>
+
+@if (referral != null)
+{
+    <form>
+        <p>Enter first name:</p>
+        <input type="text" @bind="referral.FirstName" />
+
+        <p>Enter last name:</p>
+        <input type="text" @bind="referral.LastName" />
+
+        <p>Enter email:</p>
+        <input type="text" @bind="referral.Email" />
+
+        <p>Enter phone number:</p>
+        <input type="text" @bind="referral.PhoneNumber" />
+
+        <p>Enter preferred contact:</p>
+        <input type="text" @bind="referral.PreferredContact" />
+
+        <p>Enter external identifier:</p>
+        <input type="text" @bind="referral.ExternalIdentifier" />
+
+        <p>Enter amount:</p>
+        <input type="text" @bind="referral.Amount" />
+
+        <p>Enter company name:</p>
+        <input type="text" @bind="referral.CompanyName" />
+
+        <p>Enter note:</p>
+        <input type="text" @bind="referral.Note" />
+
+        <p>Enter public note:</p>
+        <input type="text" @bind="referral.PublicNote" />
+
+        <p>Enter custom option 1 name:</p>
+        <input type="text" @bind="referral.CustomOption1Name" />
+
+        <p>Enter custom option 2 name:</p>
+        <input type="text" @bind="referral.CustomOption2Name" />
+
+        <p>Enter custom text 1 name:</p>
+        <input type="text" @bind="referral.CustomText1Name" />
+
+        <p>Enter custom text 2 name:</p>
+        <input type="text" @bind="referral.CustomText2Name" />
+
+        <p>Enter custom text 3 name:</p>
+        <input type="text" @bind="referral.CustomText3Name" />
+
+        <p>Enter custom option 1 value:</p>
+        <input type="text" @bind="referral.CustomOption1Value" />
+
+        <p>Enter custom option 2 value:</p>
+        <input type="text" @bind="referral.CustomOption2Value" />
+
+        <p>Enter custom text 1 value:</p>
+        <input type="text" @bind="referral.CustomText1Value" />
+
+        <p>Enter custom text 2 value:</p>
+        <input type="text" @bind="referral.CustomText2Value" />
+
+        <p>Enter custom text 3 value:</p>
+        <input type="text" @bind="referral.CustomText3Value" />
+
+        <button type="submit" @onclick="SubmitForm">Submit</button>
+    </form>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+
+@code {
+    [Parameter] public string MemberId { get; set; }
+    private NewReferral referral; 
+    private Member? member;
+
+    protected override async Task OnInitializedAsync()
+    {
+        referral = new NewReferral();
+
+        var list = await PageModelWithHttpClient.GetMembers(MemberId);
+        if (list.Count != 1)
+        {
+            throw new Exception("List is expected to have one member.");
+        }
+
+        member = list[0];
+    }
+
+    private async Task SubmitForm()
+    {
+        if (member == null)
+        {
+            throw new Exception("Member should not be null.");
+        }
+
+        referral.ReferralCode = member.ReferralCode;
+        Console.WriteLine(referral.FirstName);
+        var response = await PageModelWithHttpClient.CreateReferral(referral, MemberId);
+    }
+}
