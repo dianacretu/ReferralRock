@@ -1,0 +1,46 @@
+﻿@using System.Text.Json
+@using ReferralRock.Model
+@inject PageModelWithHttpClient PageModelWithHttpClient
+@page "/weather"
+@attribute [StreamRendering]
+
+<PageTitle>Members</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (members == null)
+{
+    <p><em>No members</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in members)
+            {
+                <tr>
+                    <td>@member.DisplayName</td>
+                    <td>@member.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@inject IConfiguration Configuration
+@code {
+    private List<Member>? members;
+
+    protected override async Task OnInitializedAsync()
+    {
+        members = await PageModelWithHttpClient.GetMembers();
+    }
+}
