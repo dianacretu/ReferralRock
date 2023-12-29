@@ -116,4 +116,39 @@ public class PageModelWithHttpClient : PageModel
             }
         }
     }
+
+    public async Task<bool> DeleteReferral(string referralId, string memberId)
+    {
+        var apiUrl = $"api/referral/remove";
+
+        var queries = new List<Query>();
+        var info = new Info
+        {
+            primaryInfo = new PrimaryInfo
+            {
+                referralId = referralId,
+            }
+        };
+
+        var queryApi = new Query
+        {
+            query = info
+        };
+
+        queries.Add(queryApi);
+
+        using (var httpClient = CreateClient())
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(httpClient.BaseAddress + apiUrl),
+                Content = new StringContent(JsonSerializer.Serialize(queries), Encoding.UTF8, "application/json")
+            };
+
+            var response = await httpClient.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+    }
 }

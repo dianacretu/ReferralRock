@@ -26,6 +26,9 @@ else
                     <td>@(index + 1)</td>
                     <td>@referral.DisplayName</td>
                     <td>@referral.MemberEmail</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => DeleteReferral(referral.Id)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -46,5 +49,10 @@ else
     protected void NavigateToAnotherPage()
     {
         NavigationManager.NavigateTo($"referrals/{MemberId}/new", forceLoad: true);
+    }
+
+    protected async void DeleteReferral(string referralId)
+    {
+        var response = await PageModelWithHttpClient.DeleteReferral(referralId, MemberId);
     }
 }
