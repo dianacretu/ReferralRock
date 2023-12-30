@@ -33,11 +33,10 @@ namespace ReferralRock.Model
         public string PreferredContact { get; set; }
 
         [MaxLength(50, ErrorMessage = "Identifier should not be longer than 50 characters.")]
-        [RegularExpression("^[a-zA-Z_][a-zA-Z0-9_-]*$", ErrorMessage = "Invalid identifier.")]
+        [RegularExpression("^[a-zA-Z_][a-zA-Z0-9_-]*$", ErrorMessage = "Invalid identifier")]
         public string ExternalIdentifier { get; set; }
 
-        [MaxLength(50, ErrorMessage = "Amount should not be longer than 50 characters.")]
-        [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})?$", ErrorMessage = "Invalid amount.")]
+        [Range(0, double.MaxValue, ErrorMessage = " Invalid amount")]
         public string Amount { get; set; }
 
         [MaxLength(50, ErrorMessage = "Company name should not be longer than 50 characters.")]

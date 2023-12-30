@@ -25,10 +25,6 @@ namespace ReferralRock.Model
 
         [MaxLength(50, ErrorMessage = "Email should not be longer than 50 characters.")]
         [RegularExpression("^[a-zA-Z0-9._+-]+@([a-zA-Z0-9._-]+)\\.[a-zA-Z]{2,4}$", ErrorMessage = "Invalid email")]
-        public string FullName { get; set; }
-
-        [MaxLength(50, ErrorMessage = "Email should not be longer than 50 characters.")]
-        [RegularExpression("^[a-zA-Z0-9._+-]+@([a-zA-Z0-9._-]+)\\.[a-zA-Z]{2,4}$", ErrorMessage = "Invalid email")]
         public string Email { get; set; }
 
         [MaxLength(50, ErrorMessage = "Identifier should not be longer than 50 characters.")]
@@ -39,12 +35,9 @@ namespace ReferralRock.Model
         [RegularExpression("^(\\+)?[0-9]{5,20}$", ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; }
 
-        [MaxLength(50, ErrorMessage = "Amount should not be longer than 50 characters.")]
-        [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})?$", ErrorMessage = "Invalid amount.")]
+        [Range(0, double.MaxValue, ErrorMessage =" Invalid amount")]
         public decimal Amount { get; set; }
 
-        [MaxLength(50, ErrorMessage = "Amount should not be longer than 50 characters.")]
-        [RegularExpression(@"^[0-9]+(\.[0-9]{1,2})?$", ErrorMessage = "Invalid amount.")]
         public string AmountFormatted { get; set; }
 
         [MaxLength(13, ErrorMessage = "Preferred contact should not be longer than 50 characters.")]
@@ -77,7 +70,7 @@ namespace ReferralRock.Model
 
         [MaxLength(50, ErrorMessage = "Public note should not be longer than 50 characters.")]
         public string PublicNote { get; set; }
-
+        
         [MaxLength(50, ErrorMessage = "Custom option1 name should not be longer than 50 characters.")]
         public string CustomOption1Name { get; set; }
 
