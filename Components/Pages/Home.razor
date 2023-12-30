@@ -9,8 +9,6 @@
 
 <h1>Members</h1>
 
-<p>This component demonstrates showing data.</p>
-
 @if (members == null)
 {
     <p><em>No members</em></p>
@@ -23,6 +21,8 @@ else
                 <th>Nr.</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
+                <th>Referrals</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +32,7 @@ else
                     <td>@(index + 1)</td>
                     <td>@member.DisplayName</td>
                     <td>@member.Email</td>
+                    <td>@member.Phone</td>
                     <td>
                         <a href="/referrals/@member.Id">View Referrals</a>
                     </td>

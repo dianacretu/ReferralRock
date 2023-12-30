@@ -5,73 +5,160 @@
 @page "/referrals/{memberId}/update/{referralId}"
 @rendermode InteractiveServer
 
-<h1>Counter</h1>
+<h1>Update referral</h1>
 
 @if (referral != null)
 {
-    <form>
-        <p>Enter first name:</p>
-        <input type="text" @bind="referral.FirstName" />
+    <EditForm Model="@referral" OnValidSubmit="SubmitForm" FormName="referrl-form">
+        <DataAnnotationsValidator />
+        <div class="form-group row mb-3">
+            <label for="firstName" class="col-sm-2 col-form-label">First name*:</label>
+            <div class="col-sm-4">
+                <InputText class="form-control" id="firstName" @bind-Value="referral.FirstName" />
+                <ValidationMessage For="@(() => referral.FirstName)" />
+            </div>
+        </div>
 
-        <p>Enter last name:</p>
-        <input type="text" @bind="referral.LastName" />
+        <div class="form-group row mb-3">
+            <label for="lastName" class="col-sm-2 col-form-label">Last name*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="lastName" type="text" @bind="referral.LastName">
+            </div>
+        </div>
 
-        <p>Enter email:</p>
-        <input type="text" @bind="referral.Email" />
+        <div class="form-group row mb-3">
+            <label for="email" class="col-sm-2 col-form-label">Email*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="email" type="text" @bind="referral.Email">
+            </div>
+        </div>
 
-        <p>Enter phone number:</p>
-        <input type="text" @bind="referral.PhoneNumber" />
+        <div class="form-group row mb-3">
+            <label for="phoneNumber" class="col-sm-2 col-form-label">Phone number*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="phoneNumber" type="text" @bind="referral.PhoneNumber">
+            </div>
+        </div>
 
-        <p>Enter preferred contact:</p>
-        <input type="text" @bind="referral.PreferredContact" />
+        <div class="form-group row mb-3">
+            <label for="preferredContact" class="col-sm-2 col-form-label">Preferred contact*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="preferredContact" type="text" @bind="referral.PreferredContact">
+            </div>
+        </div>
 
-        <p>Enter external identifier:</p>
-        <input type="text" @bind="referral.ExternalIdentifier" />
+        <div class="form-group row mb-3">
+            <label for="externalIdentifier" class="col-sm-2 col-form-label">External identifier*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="externalIdentifier" type="text" @bind="referral.ExternalIdentifier">
+            </div>
+        </div>
 
-        <p>Enter amount:</p>
-        <input type="text" @bind="referral.Amount" />
+        <div class="form-group row mb-3">
+            <label for="amount" class="col-sm-2 col-form-label">Amount*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="amount" type="text" @bind="referral.Amount">
+            </div>
+        </div>
 
-        <p>Enter company name:</p>
-        <input type="text" @bind="referral.CompanyName" />
+        <div class="form-group row mb-3">
+            <label for="companyName" class="col-sm-2 col-form-label">Company name*:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="companyName" type="text" @bind="referral.CompanyName">
+            </div>
+        </div>
 
-        <p>Enter note:</p>
-        <input type="text" @bind="referral.Note" />
+        <div class="form-group row mb-3">
+            <label for="note" class="col-sm-2 col-form-label">Note:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="note" type="text" @bind="referral.Note">
+            </div>
+        </div>
 
-        <p>Enter public note:</p>
-        <input type="text" @bind="referral.PublicNote" />
+        <div class="form-group row mb-3">
+            <label for="publicNote" class="col-sm-2 col-form-label">Public note:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="publicNote" type="text" @bind="referral.PublicNote">
+            </div>
+        </div>
 
-        <p>Enter custom option 1 name:</p>
-        <input type="text" @bind="referral.CustomOption1Name" />
+        <div class="form-group row mb-3">
+            <label for="customOption1Name" class="col-sm-2 col-form-label">Custom option1 name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customOption1Name" type="text" @bind="referral.CustomOption1Name">
+            </div>
+        </div>
 
-        <p>Enter custom option 2 name:</p>
-        <input type="text" @bind="referral.CustomOption2Name" />
+        <div class="form-group row mb-3">
+            <label for="customOption2Name" class="col-sm-2 col-form-label">Custom option2 name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customOption2Name" type="text" @bind="referral.CustomOption2Name">
+            </div>
+        </div>
 
-        <p>Enter custom text 1 name:</p>
-        <input type="text" @bind="referral.CustomText1Name" />
+        <div class="form-group row mb-3">
+            <label for="customText1Name" class="col-sm-2 col-form-label">Custom text1 name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText1Name" type="text" @bind="referral.CustomText1Name">
+            </div>
+        </div>
 
-        <p>Enter custom text 2 name:</p>
-        <input type="text" @bind="referral.CustomText2Name" />
+        <div class="form-group row mb-3">
+            <label for="customText2Name" class="col-sm-2 col-form-label">Custom text2 name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText2Name" type="text" @bind="referral.CustomText2Name">
+            </div>
+        </div>
 
-        <p>Enter custom text 3 name:</p>
-        <input type="text" @bind="referral.CustomText3Name" />
+        <div class="form-group row mb-3">
+            <label for="customText3Name" class="col-sm-2 col-form-label">Custom text3 name:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText3Name" type="text" @bind="referral.CustomText3Name">
+            </div>
+        </div>
 
-        <p>Enter custom option 1 value:</p>
-        <input type="text" @bind="referral.CustomOption1Value" />
+        <div class="form-group row mb-3">
+            <label for="customOption1Value" class="col-sm-2 col-form-label">Custom option1 value:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customOption1Value" type="text" @bind="referral.CustomOption1Value">
+            </div>
+        </div>
 
-        <p>Enter custom option 2 value:</p>
-        <input type="text" @bind="referral.CustomOption2Value" />
+        <div class="form-group row mb-3">
+            <label for="customOption2Value" class="col-sm-2 col-form-label">Custom option2 value:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customOption2Value" type="text" @bind="referral.CustomOption2Value">
+            </div>
+        </div>
 
-        <p>Enter custom text 1 value:</p>
-        <input type="text" @bind="referral.CustomText1Value" />
+        <div class="form-group row mb-3">
+            <label for="customText1Value" class="col-sm-2 col-form-label">Custom text1 value:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText1Value" type="text" @bind="referral.CustomText1Value">
+            </div>
+        </div>
 
-        <p>Enter custom text 2 value:</p>
-        <input type="text" @bind="referral.CustomText2Value" />
+        <div class="form-group row mb-3">
+            <label for="customText2Value" class="col-sm-2 col-form-label">Custom text2 value:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText2Value" type="text" @bind="referral.CustomText2Value">
+            </div>
+        </div>
 
-        <p>Enter custom text 3 value:</p>
-        <input type="text" @bind="referral.CustomText3Value" />
+        <div class="form-group row mb-3">
+            <label for="customText3Value" class="col-sm-2 col-form-label">Custom text3 value:</label>
+            <div class="col-sm-4">
+                <input class="form-control" id="customText3Value" type="text" @bind="referral.CustomText3Value">
+            </div>
+        </div>
 
-        <button type="submit" @onclick="SubmitForm">Submit</button>
-    </form>
+        <div class="form-group row mb-3">
+            <div class="col-sm-4">
+                <button class="btn btn-primary" type="submit" @onclick="SubmitForm">Submit</button>
+            </div>
+        </div>
+
+    </EditForm>
 }
 else
 {
@@ -82,7 +169,8 @@ else
 @code {
     [Parameter] public string MemberId { get; set; }
     [Parameter] public string ReferralId { get; set; }
-    private Referral referral;
+    [SupplyParameterFromForm]
+    private Referral referral { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,5 +191,7 @@ else
         }
 
         var response = await PageModelWithHttpClient.UpdateReferral(ReferralId, referral);
+
+        NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
     }
 }

@@ -34,7 +34,7 @@ public class PageModelWithHttpClient : PageModel
 
         if (!string.IsNullOrEmpty(memberId))
         {
-            parameters.Add("memberId", memberId);
+            parameters.Add("query", memberId);
         }
 
         var queryString = string.Join("&", parameters.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}"));

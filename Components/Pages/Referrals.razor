@@ -5,6 +5,10 @@
 @page "/referrals/{memberId}"
 @rendermode InteractiveServer
 
+<PageTitle>Referrals</PageTitle>
+
+<h1>Referrals</h1>
+
 @if (referrals == null)
 {
     <p><em>No referrals</em></p>
@@ -27,7 +31,7 @@ else
                 <tr>
                     <td>@(index + 1)</td>
                     <td>@referral.DisplayName</td>
-                    <td>@referral.MemberEmail</td>
+                    <td>@referral.Email</td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => UpdateReferral(referral.Id)">Update</button>
                     </td>
