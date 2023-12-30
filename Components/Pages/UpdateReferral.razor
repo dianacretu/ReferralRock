@@ -174,13 +174,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var list = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
-        if (list.Count != 1)
+        var response = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
+        if (response.Referrals.Count != 1)
         {
             throw new Exception("List is expected to have one referral.");
         }
 
-        referral = list[0];
+        referral = response.Referrals[0];
     }
 
     private async Task SubmitForm()

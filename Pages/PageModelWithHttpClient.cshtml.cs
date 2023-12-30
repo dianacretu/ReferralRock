@@ -68,7 +68,7 @@ public class PageModelWithHttpClient : PageModel
         }
     }
 
-    public async Task<List<Referral>> GetReferrals(string memberId, string query = null)
+    public async Task<ReferralApiResponse> GetReferrals(string memberId, string query = null, int? offset = null, int? count = null)
     {
         var parameters = new Dictionary<string, string>
         {
@@ -79,6 +79,16 @@ public class PageModelWithHttpClient : PageModel
         if (!string.IsNullOrEmpty(query))
         {
             parameters.Add("query", query);
+        }
+
+        if (offset != null)
+        {
+            parameters.Add("offset", offset.ToString());
+        }
+
+        if (count != null)
+        {
+            parameters.Add("count", count.ToString());
         }
 
         var queryString = string.Join("&", parameters.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}"));
@@ -93,7 +103,7 @@ public class PageModelWithHttpClient : PageModel
                 var content = await response.Content.ReadAsStringAsync();
                 ReferralApiResponse apiResponse = JsonSerializer.Deserialize<ReferralApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                return apiResponse.Referrals;
+                return apiResponse;
             }
             else
             {

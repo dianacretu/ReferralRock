@@ -29,7 +29,7 @@ else
             @foreach (var (referral, index) in referrals.Select((r, i) => (r, i)))
             {
                 <tr>
-                    <td>@(index + 1)</td>
+                    <td>@(CurrentPage * PageSize + index + 1)</td>
                     <td>@referral.DisplayName</td>
                     <td>@referral.Email</td>
                     <td>
@@ -42,6 +42,18 @@ else
             }
         </tbody>
     </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 0; i < TotalPages; i++)
+            {
+                int pageNumber = i;
+                <li class="page-item @(pageNumber == CurrentPage ? "active" : "") pointer-cursor">
+                    <a class="page-link" @onclick="() => LoadPage(pageNumber)">@(i + 1)</a>
+                </li>
+            }
+        </ul>
+    </nav>
 }
 
 <button class="btn btn-primary" @onclick="NavigateToAnotherPage">Add new referral</button>
@@ -49,10 +61,21 @@ else
 @code {
     [Parameter] public string MemberId { get; set; }
     private List<Referral>? referrals;
+    private int CurrentPage { get; set; } = 0;
+    private int PageSize { get; set; } = 5;
+    private int TotalPages { get; set; } = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        referrals = await PageModelWithHttpClient.GetReferrals(MemberId);
+        await LoadPage(CurrentPage);
+    }
+
+    private async Task LoadPage(int page)
+    {
+        CurrentPage = page;
+        var response = await PageModelWithHttpClient.GetReferrals(memberId: MemberId, offset: CurrentPage * PageSize, count: PageSize);
+        TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
+        referrals = response.Referrals;
     }
 
     protected void NavigateToAnotherPage()
