@@ -178,13 +178,13 @@ else
     {
         referral = new NewReferral();
 
-        var list = await PageModelWithHttpClient.GetMembers(MemberId);
-        if (list.Count != 1)
+        MemberApiResponse response = await PageModelWithHttpClient.GetMembers(MemberId);
+        if (response.Members.Count != 1)
         {
             throw new Exception("List is expected to have one member.");
         }
 
-        member = list[0];
+        member = response.Members[0];
     }
 
     private async Task SubmitForm()

@@ -68,5 +68,7 @@ else
     protected async void DeleteReferral(string referralId)
     {
         var response = await PageModelWithHttpClient.DeleteReferral(referralId, MemberId);
+
+        NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
     }
 }

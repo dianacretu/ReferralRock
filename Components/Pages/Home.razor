@@ -3,7 +3,7 @@
 @inject PageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
 @page "/"
-@attribute [StreamRendering]
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -29,7 +29,7 @@ else
             @foreach (var (member, index) in members.Select((r, i) => (r, i)))
             {
                 <tr>
-                    <td>@(index + 1)</td>
+                    <td>@(CurrentPage * PageSize + index + 1)</td>
                     <td>@member.DisplayName</td>
                     <td>@member.Email</td>
                     <td>@member.Phone</td>
@@ -40,13 +40,38 @@ else
             }
         </tbody>
     </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 0; i < TotalPages; i++)
+            {
+                int pageNumber = i;
+                <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
+                    <a class="page-link" href="#" @onclick="() => LoadPage(pageNumber)">@(i + 1)</a>
+                </li>
+            }
+        </ul>
+    </nav>
 }
 
 @code {
+    private int CurrentPage { get; set; } = 0;
+    private int PageSize { get; set; } = 5;
     private List<Member>? members;
+    private int TotalPages { get; set; } = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        members = await PageModelWithHttpClient.GetMembers();
+        await LoadPage(CurrentPage);
+    }
+
+    private async Task LoadPage(int page)
+    {
+        CurrentPage = page;
+        MemberApiResponse response = await PageModelWithHttpClient.GetMembers(offset: CurrentPage * PageSize, count: PageSize);
+        TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
+        members = response.Members;
+
+        StateHasChanged();
     }
 }
