@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReferralRock.Model
 {
@@ -12,6 +13,7 @@ namespace ReferralRock.Model
     {
         public string ReferralCode { get; set; }
 
+        [BindProperty]
         [MaxLength(50, ErrorMessage = "First name should not be longer than 50 characters.")]
         [RegularExpression("^[A-Za-z\\-\\'\\s]+$", ErrorMessage = "Invalid first name")]
         public string FirstName { get; set; }
