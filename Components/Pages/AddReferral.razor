@@ -53,9 +53,14 @@
         </div>
 
         <div class="form-group row mb-3">
-            <label for="preferredContact" class="col-sm-2 col-form-label">Preferred contact*:</label>
+            <label for="preferredContact" class="col-sm-2 col-form-label">Preferred contact:</label>
             <div class="col-sm-4">
-                <InputText class="form-control" id="preferredContact" type="text" @bind-Value="referral.PreferredContact" />
+                <InputSelect class="form-control" id="preferredContact" @bind-Value="referral.PreferredContact">
+                    <option value="email">Email</option>
+                    <option value="callMorning">Call Morning</option>
+                    <option value="callAfternoon">Call Afternoon</option>
+                    <option value="callEvening">Call Evening</option>
+                </InputSelect>
                 <ValidationMessage For="@(() => referral.PreferredContact)" />
             </div>
         </div>

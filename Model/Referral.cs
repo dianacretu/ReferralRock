@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReferralRock.Model
 {
@@ -35,6 +36,7 @@ namespace ReferralRock.Model
         [RegularExpression("^(\\+)?[0-9]{5,20}$", ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; }
 
+        [DefaultValue(0)]
         [Range(0, double.MaxValue, ErrorMessage =" Invalid amount")]
         public decimal Amount { get; set; }
 
