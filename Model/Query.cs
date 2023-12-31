@@ -32,6 +32,12 @@
     {
         public Info query { get; set; }
     }
+    public class DeleteApiResponse
+    {
+        public Info query { get; set; }
+        public ResultInfo resultInfo { get; set; }
+    }
+
     public class UpdateQuery
     {
         public Info query { get; set; }

@@ -9,6 +9,13 @@
 
 <h1>Members</h1>
 
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+
 @if (members == null)
 {
     <p><em>No members</em></p>
@@ -59,6 +66,7 @@ else
     private int PageSize { get; set; } = 5;
     private List<Member>? members;
     private int TotalPages { get; set; } = 1;
+    private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,6 +77,11 @@ else
     {
         CurrentPage = page;
         MemberApiResponse response = await PageModelWithHttpClient.GetMembers(offset: CurrentPage * PageSize, count: PageSize);
+        if (response.Members == null)
+        {
+            ErrorMessage = response.Message;
+        }
+
         TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
         members = response.Members;
 

@@ -9,6 +9,13 @@
 
 <h1>New referral</h1>
 
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+
 @if (referral != null)
 {
     <EditForm Model="@referral" OnValidSubmit="SubmitForm" FormName="referrl-form">
@@ -173,12 +180,19 @@ else
     [SupplyParameterFromForm] 
     public NewReferral referral { get; set; }
     private Member? member;
+    private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         referral = new NewReferral();
 
         MemberApiResponse response = await PageModelWithHttpClient.GetMembers(MemberId);
+        if (response.Members == null)
+        {
+            ErrorMessage = response.Message;
+            return;
+        }
+        
         if (response.Members.Count != 1)
         {
             throw new Exception("List is expected to have one member.");
@@ -196,8 +210,14 @@ else
 
         referral.ReferralCode = member.ReferralCode;
         Console.WriteLine(referral.FirstName);
-        var response = await PageModelWithHttpClient.CreateReferral(referral, MemberId);
-
-        NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
+        NewReferralApiResponse response = await PageModelWithHttpClient.CreateReferral(referral, MemberId);
+        if (response.Referral == null)
+        {
+            ErrorMessage = response.Message;
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
+        }
     }
 }

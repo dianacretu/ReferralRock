@@ -7,6 +7,13 @@
 
 <h1>Update referral</h1>
 
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+
 @if (referral != null)
 {
     <EditForm Model="@referral" OnValidSubmit="SubmitForm" FormName="referrl-form">
@@ -171,10 +178,17 @@ else
     [Parameter] public string ReferralId { get; set; }
     [SupplyParameterFromForm]
     private Referral referral { get; set; }
+    private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
+        ReferralApiResponse response = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
+        if (response.Referrals == null)
+        {
+            ErrorMessage = response.Message;
+            return;
+        }
+
         if (response.Referrals.Count != 1)
         {
             throw new Exception("List is expected to have one referral.");
@@ -190,7 +204,12 @@ else
             throw new Exception("Referral should not be null.");
         }
 
-        var response = await PageModelWithHttpClient.UpdateReferral(ReferralId, referral);
+        UpdateQueryResponse response = await PageModelWithHttpClient.UpdateReferral(ReferralId, referral);
+        if (response.resultInfo.Status != "Succeeded")
+        {
+            ErrorMessage = response.resultInfo.Message;
+            return;
+        }
 
         NavigationManager.NavigateTo($"referrals/{MemberId}");
     }

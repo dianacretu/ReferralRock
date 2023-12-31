@@ -9,6 +9,13 @@
 
 <h1>Referrals</h1>
 
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+
 @if (referrals == null)
 {
     <p><em>No referrals</em></p>
@@ -64,6 +71,7 @@ else
     private int CurrentPage { get; set; } = 0;
     private int PageSize { get; set; } = 5;
     private int TotalPages { get; set; } = 1;
+    private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,7 +81,12 @@ else
     private async Task LoadPage(int page)
     {
         CurrentPage = page;
-        var response = await PageModelWithHttpClient.GetReferrals(memberId: MemberId, offset: CurrentPage * PageSize, count: PageSize);
+        ReferralApiResponse response = await PageModelWithHttpClient.GetReferrals(memberId: MemberId, offset: CurrentPage * PageSize, count: PageSize);
+        if (response.Referrals == null)
+        {
+            ErrorMessage = response.Message;
+        }
+
         TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
         referrals = response.Referrals;
     }
@@ -91,6 +104,11 @@ else
     protected async void DeleteReferral(string referralId)
     {
         var response = await PageModelWithHttpClient.DeleteReferral(referralId, MemberId);
+        if (response.resultInfo.Status != "Success")
+        {
+            ErrorMessage = response.resultInfo.Message;
+            return;
+        }
 
         NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
     }

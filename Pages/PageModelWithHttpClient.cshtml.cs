@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using ReferralRock.Model;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
@@ -53,18 +52,10 @@ public class PageModelWithHttpClient : PageModel
         using (var httpClient = CreateClient())
         {
             var response = await httpClient.GetAsync(apiUrl);
+            var content = await response.Content.ReadAsStringAsync();
+            MemberApiResponse apiResponse = JsonSerializer.Deserialize<MemberApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                MemberApiResponse apiResponse = JsonSerializer.Deserialize<MemberApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                return apiResponse;
-            }
-            else
-            {
-                return null;
-            }
+            return apiResponse;
         }
     }
 
@@ -97,22 +88,14 @@ public class PageModelWithHttpClient : PageModel
         using (var httpClient = CreateClient())
         {
             var response = await httpClient.GetAsync(apiUrl);
+            var content = await response.Content.ReadAsStringAsync();
+            ReferralApiResponse apiResponse = JsonSerializer.Deserialize<ReferralApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                ReferralApiResponse apiResponse = JsonSerializer.Deserialize<ReferralApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                return apiResponse;
-            }
-            else
-            {
-                return null;
-            }
+            return apiResponse;
         }
     }
 
-    public async Task<Referral> CreateReferral(NewReferral referral, string memberId)
+    public async Task<NewReferralApiResponse> CreateReferral(NewReferral referral, string memberId)
     {
         var parameters = new Dictionary<string, string>
         {
@@ -128,22 +111,14 @@ public class PageModelWithHttpClient : PageModel
             var jsonContent = new StringContent(JsonSerializer.Serialize(referral), Encoding.UTF8, "application/json");
 
             var response = await httpClient.PostAsync(apiUrl, jsonContent);
+            var content = await response.Content.ReadAsStringAsync();
+            NewReferralApiResponse apiResponse = JsonSerializer.Deserialize<NewReferralApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                NewReferralApiResponse apiResponse = JsonSerializer.Deserialize<NewReferralApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                return apiResponse.Referral;
-            }
-            else
-            {
-                return null;
-            }
+            return apiResponse;
         }
     }
 
-    public async Task<bool> DeleteReferral(string referralId, string memberId)
+    public async Task<DeleteApiResponse> DeleteReferral(string referralId, string memberId)
     {
         var apiUrl = $"api/referral/remove";
 
@@ -173,12 +148,14 @@ public class PageModelWithHttpClient : PageModel
             };
 
             var response = await httpClient.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            List<DeleteApiResponse> apiResponse = JsonSerializer.Deserialize<List<DeleteApiResponse>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            return response.IsSuccessStatusCode;
+            return apiResponse[0];
         }
     }
 
-    public async Task<string> UpdateReferral(string referralId, Referral referral)
+    public async Task<UpdateQueryResponse> UpdateReferral(string referralId, Referral referral)
     {
         var apiUrl = $"api/referral/update";
 
@@ -204,19 +181,10 @@ public class PageModelWithHttpClient : PageModel
             var jsonContent = new StringContent(JsonSerializer.Serialize(queries), Encoding.UTF8, "application/json");
 
             var response = await httpClient.PostAsync(apiUrl, jsonContent);
+            var content = await response.Content.ReadAsStringAsync();
+            List<UpdateQueryResponse> apiResponse = JsonSerializer.Deserialize<List<UpdateQueryResponse>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                List<UpdateQueryResponse> apiResponse = JsonSerializer.Deserialize<List<UpdateQueryResponse>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                return apiResponse[0].resultInfo.Message;
-            }
-            else
-            {
-                return null;
-
-            }
+            return apiResponse[0];
         }
     }
 }
