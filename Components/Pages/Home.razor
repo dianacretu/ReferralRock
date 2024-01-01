@@ -1,5 +1,6 @@
 ﻿@using System.Text.Json
 @using ReferralRock.Model
+@using ReferralRock.Components.CommonComponents;
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
 @inject ILogger<Home> Logger
@@ -49,17 +50,7 @@ else
         </tbody>
     </table>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @for (int i = 0; i < TotalPages; i++)
-            {
-                int pageNumber = i;
-                <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
-                    <a class="page-link" href="#" @onclick="() => LoadPage(pageNumber)">@(i + 1)</a>
-                </li>
-            }
-        </ul>
-    </nav>
+    <Pagination TotalPages=@TotalPages CurrentPage=@CurrentPage Action=@LoadPage/>
 }
 
 @code {

@@ -1,5 +1,6 @@
 ﻿@using System.Text.Json
 @using ReferralRock.Model
+@using ReferralRock.Components.CommonComponents;
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
 @inject ILogger<Referrals> Logger
@@ -16,6 +17,8 @@
         @ErrorMessage
     </div>
 }
+
+<button class="btn btn-primary" @onclick="NavigateToAddReferral">Add new referral</button>
 
 @if (referrals == null)
 {
@@ -51,20 +54,8 @@ else
         </tbody>
     </table>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @for (int i = 0; i < TotalPages; i++)
-            {
-                int pageNumber = i;
-                <li class="page-item @(pageNumber == CurrentPage ? "active" : "") pointer-cursor">
-                    <a class="page-link" @onclick="() => LoadPage(pageNumber)">@(i + 1)</a>
-                </li>
-            }
-        </ul>
-    </nav>
+    <Pagination TotalPages=@TotalPages CurrentPage=@CurrentPage Action=@LoadPage/>
 }
-
-<button class="btn btn-primary" @onclick="NavigateToAddReferral">Add new referral</button>
 
 @code {
     [Parameter] public string MemberId { get; set; }
@@ -94,6 +85,7 @@ else
         TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
         referrals = response.Referrals;
         Logger.LogInformation("Received referrals from API.");
+        StateHasChanged();
     }
 
     protected void NavigateToAddReferral()
