@@ -1,9 +1,6 @@
 ﻿using Bunit;
 using Moq;
 using ReferralRock.Model;
-using ReferralRock.Pages;
-using System.Diagnostics.Metrics;
-using System.Numerics;
 using Xunit;
 
 namespace ReferralRock.Components.Pages.Tests
@@ -62,8 +59,24 @@ namespace ReferralRock.Components.Pages.Tests
             return mockApiResponse;
         }
 
+        public UpdateQueryResponse UpdateQueryResponseMockFailed()
+        {
+            var mockApiResponse = new UpdateQueryResponse
+            {
+                query = null,
+                resultInfo = new ResultInfo
+                {
+                    Status = "Fail",
+                    Message = "Fail"
+                }
+
+            };
+
+            return mockApiResponse;
+        }
+
         [Fact]
-        public async Task TestUpdateReferralRender()
+        public async Task TestUpdateReferralRenderSuccess()
         {
             var mockMyService = new Mock<IPageModelWithHttpClient>();
             mockMyService.Setup(x => x.GetReferrals("id_member","id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
@@ -83,6 +96,52 @@ namespace ReferralRock.Components.Pages.Tests
             cut.Find("button[type='submit']").Click();
 
             Assert.ThrowsAny<ElementNotFoundException>(() => cut.Find(".alert.alert-danger"));
+        }
+
+        [Fact]
+        public async Task TestUpdateReferralRenderValidationError()
+        {
+            var mockMyService = new Mock<IPageModelWithHttpClient>();
+            mockMyService.Setup(x => x.GetReferrals("id_member", "id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
+            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<Referral>())).ReturnsAsync(UpdateQueryResponseMock());
+
+            using var ctx = new TestContext();
+            ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
+
+            var cut = ctx.RenderComponent<UpdateReferral>(parameters => parameters
+                .Add(p => p.MemberId, "id_member")
+                .Add(p => p.ReferralId, "id_referral")
+            );
+
+            cut.Find("#firstName").Change("....");
+            cut.Find("#lastName").Change("Doe");
+
+            cut.Find("button[type='submit']").Click();
+
+            Assert.Contains("Invalid first name", cut.Markup);
+        }
+
+        [Fact]
+        public async Task TestUpdateReferralRenderError()
+        {
+            var mockMyService = new Mock<IPageModelWithHttpClient>();
+            mockMyService.Setup(x => x.GetReferrals("id_member", "id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
+            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<Referral>())).ReturnsAsync(UpdateQueryResponseMockFailed());
+
+            using var ctx = new TestContext();
+            ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
+
+            var cut = ctx.RenderComponent<UpdateReferral>(parameters => parameters
+                .Add(p => p.MemberId, "id_member")
+                .Add(p => p.ReferralId, "id_referral")
+            );
+
+            cut.Find("#firstName").Change("John");
+            cut.Find("#lastName").Change("Doe");
+
+            cut.Find("button[type='submit']").Click();
+
+            Assert.NotNull(cut.Find(".alert.alert-danger"));
         }
     }
 }

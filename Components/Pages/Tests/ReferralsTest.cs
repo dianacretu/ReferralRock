@@ -1,9 +1,6 @@
 ﻿using Bunit;
 using Moq;
 using ReferralRock.Model;
-using ReferralRock.Pages;
-using System.Diagnostics.Metrics;
-using System.Numerics;
 using Xunit;
 
 namespace ReferralRock.Components.Pages.Tests
@@ -23,7 +20,7 @@ namespace ReferralRock.Components.Pages.Tests
             {
                 Offset = 1,
                 Total = 10,
-                Message = "Succes",
+                Message = "Success",
                 Referrals = mockedReferrals
 
             };
@@ -48,10 +45,36 @@ namespace ReferralRock.Components.Pages.Tests
             // Assert the presence of a button in the first row for updating
             Assert.NotNull(cut.Find("table tbody tr:nth-child(1) button:contains('Update')"));
 
+            Assert.ThrowsAny<ElementNotFoundException>(() => cut.Find(".alert.alert-danger"));
+
             // Assert the presence of a button in the first row for deleting
             Assert.NotNull(cut.Find("table tbody tr:nth-child(1) button:contains('Delete')"));
+            cut.Find("table tbody tr:nth-child(1) button:contains('Delete')").Click();
 
             Assert.ThrowsAny<ElementNotFoundException>(() => cut.Find(".alert.alert-danger"));
+        }
+
+        [Fact]
+        public async Task TestReferralsRenderError()
+        {
+            var mockApiResponse = new ReferralApiResponse
+            {
+                Offset = 1,
+                Total = 10,
+                Message = "Fail"
+            };
+
+            var mockMyService = new Mock<IPageModelWithHttpClient>();
+            mockMyService.Setup(x => x.GetReferrals("id", null, 0, 5)).ReturnsAsync(mockApiResponse);
+
+            using var ctx = new TestContext();
+            ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
+
+            var cut = ctx.RenderComponent<Referrals>(parameters => parameters
+                .Add(p => p.MemberId, "id")
+            );
+
+            Assert.NotNull(cut.Find(".alert.alert-danger"));
         }
     }
 }

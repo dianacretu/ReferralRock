@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Moq;
 using ReferralRock.Model;
-using ReferralRock.Pages;
-using System.Diagnostics.Metrics;
-using System.Numerics;
 using Xunit;
 
 namespace ReferralRock.Components.Pages.Tests
@@ -24,7 +21,7 @@ namespace ReferralRock.Components.Pages.Tests
             {
                 Offset = 1,
                 Total = 10,
-                Message = "Succes",
+                Message = "Success",
                 Members = mockedMembers
 
             };
@@ -33,7 +30,7 @@ namespace ReferralRock.Components.Pages.Tests
         }
 
         [Fact]
-        public async Task TestHomeRender()
+        public async Task TestHomeRenderSuccess()
         {
             var mockMyService = new Mock<IPageModelWithHttpClient>();
             mockMyService.Setup(x => x.GetMembers(null, 0, 5)).ReturnsAsync(CreateMemberApiResponseMock());
@@ -56,6 +53,28 @@ namespace ReferralRock.Components.Pages.Tests
             Assert.NotNull(cut.Find("a[href^='/referrals/']"));
 
             Assert.ThrowsAny<ElementNotFoundException>(() => cut.Find(".alert.alert-danger"));
+        }
+
+        [Fact]
+        public async Task TestHomeRenderError()
+        {
+            var mockMyService = new Mock<IPageModelWithHttpClient>();
+            mockMyService.Setup(x => x.GetMembers(null, 0, 5)).ReturnsAsync(new MemberApiResponse
+            {
+                Offset = 1,
+                Total = 0,
+                Message = "Fail"
+            });
+
+            var navigationManagerMock = new Mock<NavigationManager>();
+
+            using var ctx = new TestContext();
+            ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
+            ctx.Services.AddSingleton(navigationManagerMock.Object);
+
+            var cut = ctx.RenderComponent<Home>();
+
+            Assert.NotNull(cut.Find(".alert.alert-danger"));
         }
     }
 }
