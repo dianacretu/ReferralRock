@@ -2,6 +2,7 @@
 @using ReferralRock.Model
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
+@inject ILogger<Home> Logger
 @page "/"
 @rendermode InteractiveServer
 
@@ -79,11 +80,15 @@ else
         MemberApiResponse response = await PageModelWithHttpClient.GetMembers(offset: CurrentPage * PageSize, count: PageSize);
         if (response.Members == null)
         {
+            Logger.LogError("Received error when fetching members: " + response.Message);
             ErrorMessage = response.Message;
+            StateHasChanged();
+            return;
         }
 
         TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
         members = response.Members;
+        Logger.LogInformation("Received members from API.");
 
         StateHasChanged();
     }

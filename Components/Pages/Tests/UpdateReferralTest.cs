@@ -19,7 +19,7 @@ namespace ReferralRock.Components.Pages.Tests
             {
                 Offset = 1,
                 Total = 1,
-                Message = "Succes",
+                Message = "Success",
                 Referrals = mockedReferrals
 
             };
@@ -31,7 +31,7 @@ namespace ReferralRock.Components.Pages.Tests
         {
             var mockApiResponse = new NewReferralApiResponse
             {
-                Message = "Succes",
+                Message = "Success",
                 Referral = new ReceivedReferral
                 {
                     FirstName = "John",

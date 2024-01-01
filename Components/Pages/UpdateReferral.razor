@@ -3,6 +3,7 @@
 @using ReferralRock.Components.CommonComponents;
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
+@inject ILogger<UpdateReferral> Logger
 @page "/referrals/{memberId}/update/{referralId}"
 @rendermode InteractiveServer
 
@@ -36,10 +37,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         ReferralApiResponse response = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
-        
         if (response.Referrals == null)
         {
             ErrorMessage = response.Message;
+            Logger.LogError("Received error when fetching referrals: " + response.Message);
+            StateHasChanged();
             return;
         }
 
@@ -51,6 +53,7 @@ else
         referral = new NewReferral();
         referral.FromReceivedReferral(response.Referrals[0]);
         receivedReferral = response.Referrals[0];
+        Logger.LogInformation("Received referral with id" + ReferralId + " from API.");
     }
 
     private async Task SubmitForm()
@@ -65,10 +68,12 @@ else
         if (response.resultInfo.Status != "Succeeded")
         {
             ErrorMessage = response.resultInfo.Message;
+            Logger.LogError("Received error when updating referral: " + response.resultInfo.Message);
             StateHasChanged();
             return;
         }
 
+        Logger.LogInformation("Updated referral with id" + ReferralId + " from API.");
         NavigationManager.NavigateTo($"referrals/{MemberId}");
     }
 }

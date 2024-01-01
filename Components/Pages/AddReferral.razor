@@ -5,6 +5,7 @@
 @using ReferralRock.Components.CommonComponents;
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
+@inject ILogger<AddReferral> Logger
 @page "/referrals/{memberId}/new"
 @rendermode InteractiveServer
 
@@ -42,6 +43,7 @@ else
         if (response.Members == null)
         {
             ErrorMessage = response.Message;
+            Logger.LogError("Received error when fetching member with id " + MemberId + ": " + response.Message);
             StateHasChanged();
             return;
         }
@@ -52,6 +54,7 @@ else
         }
 
         member = response.Members[0];
+        Logger.LogInformation("Got member with id " + MemberId + ".");
     }
 
     private async Task SubmitForm()
@@ -66,10 +69,12 @@ else
         if (response.Referral == null)
         {
             ErrorMessage = response.Message;
+            Logger.LogError("Create referral failed: " + response.Message);
             StateHasChanged();
         }
         else
         {
+            Logger.LogInformation("Created referral with id " + response.Referral.Id + ".");
             NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
         }
     }

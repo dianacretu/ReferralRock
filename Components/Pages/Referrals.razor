@@ -2,6 +2,7 @@
 @using ReferralRock.Model
 @inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
+@inject ILogger<Referrals> Logger
 @page "/referrals/{memberId}"
 @rendermode InteractiveServer
 
@@ -85,10 +86,14 @@ else
         if (response.Referrals == null)
         {
             ErrorMessage = response.Message;
+            Logger.LogError("Received error when fetching referrals: " + response.Message);
+            StateHasChanged();
+            return;
         }
 
         TotalPages = (int)Math.Ceiling((double)response.Total / PageSize);
         referrals = response.Referrals;
+        Logger.LogInformation("Received referrals from API.");
     }
 
     protected void NavigateToAddReferral()
@@ -105,11 +110,14 @@ else
     {
         var response = await PageModelWithHttpClient.DeleteReferral(referralId, MemberId);
         if (response.resultInfo.Status != "Success")
-        {
+        {        
+            Logger.LogError("Received error when deleting referral " + referralId + ": " + response.resultInfo.Message);
             ErrorMessage = response.resultInfo.Message;
+            StateHasChanged();
             return;
         }
 
+        Logger.LogInformation("Deleted referral " + referralId + ".");
         NavigationManager.NavigateTo($"referrals/{MemberId}", forceLoad: true);
     }
 }

@@ -19,7 +19,7 @@ namespace ReferralRock.Components.Pages.Tests
             {
                 Offset = 1,
                 Total = 1,
-                Message = "Succes",
+                Message = "Success",
                 Members = mockedMembers
 
             };
