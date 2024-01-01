@@ -1,5 +1,4 @@
 using ReferralRock.Components;
-using ReferralRock.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 

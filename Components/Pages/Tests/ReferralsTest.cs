@@ -10,10 +10,10 @@ namespace ReferralRock.Components.Pages.Tests
         [Fact]
         public async Task TestReferralsRenderSuccess()
         {
-            var mockedReferrals = new List<Referral>
+            var mockedReferrals = new List<ReceivedReferral>
             {
-                new Referral { Id = "1", DisplayName = "John Doe", FirstName = "John" },
-                new Referral { Id = "2", DisplayName = "Jane Doe", FirstName = "Jane" },
+                new ReceivedReferral { Id = "1", DisplayName = "John Doe", FirstName = "John" },
+                new ReceivedReferral { Id = "2", DisplayName = "Jane Doe", FirstName = "Jane" },
             };
 
             var mockApiResponse = new ReferralApiResponse

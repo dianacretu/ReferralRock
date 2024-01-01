@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReferralRock.Model
@@ -8,10 +9,9 @@ namespace ReferralRock.Model
         public int Offset { get; set; }
         public int Total { get; set; }
         public string Message { get; set; }
-        public List<Referral> Referrals { get; set; }
-
+        public List<ReceivedReferral> Referrals { get; set; }
     }
-    public class Referral
+    public class ReceivedReferral
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }
@@ -29,7 +29,7 @@ namespace ReferralRock.Model
         public string Email { get; set; }
 
         [MaxLength(50, ErrorMessage = "Identifier should not be longer than 50 characters.")]
-        [RegularExpression("^[a-zA-Z_][a-zA-Z0-9_-]*$", ErrorMessage = "Invalid identifier.")]
+        [RegularExpression("^[a-zA-Z_][a-zA-Z0-9_-]*$", ErrorMessage = "Invalid identifier")]
         public string ExternalIdentifier { get; set; }
 
         [MaxLength(21, ErrorMessage = "Phone number should not be longer than 50 characters.")]
@@ -59,7 +59,7 @@ namespace ReferralRock.Model
         public DateTime? ApprovedDate { get; set; }
         public DateTime? QualifiedDate { get; set; }
 
-        [MaxLength(13, ErrorMessage = "Status should not be longer than 50 characters.")]
+        [MaxLength(9, ErrorMessage = "Status should not be longer than 50 characters.")]
         [RegularExpression("^(pending|qualified|approved|denied)$", ErrorMessage = "Invalid value. Status can be 'pending', 'qualified', 'approved', or 'denied'.")]
         public string Status { get; set; }
 
@@ -109,5 +109,29 @@ namespace ReferralRock.Model
         public string UtmCampaign { get; set; }
         public string BrowserReferrerUrl { get; set; }
         public string IPAddressSource { get; set; }
+
+        public void FromNewReferral(NewReferral referral)
+        {
+            FirstName = referral.FirstName;
+            LastName = referral.LastName;
+            Email = referral.Email;
+            PhoneNumber = referral.PhoneNumber;
+            PreferredContact = referral.PreferredContact;
+            ExternalIdentifier = referral.ExternalIdentifier;
+            Amount = Decimal.Parse(referral.Amount);
+            CompanyName = referral.CompanyName;
+            Note = referral.Note;
+            PublicNote = referral.PublicNote;
+            CustomOption1Name = referral.CustomOption1Name;
+            CustomOption2Name = referral.CustomOption2Name;
+            CustomText1Name = referral.CustomText1Name;
+            CustomText2Name = referral.CustomText2Name;
+            CustomText3Name = referral.CustomText3Name;
+            CustomOption1Value = referral.CustomOption1Value;
+            CustomOption2Value = referral.CustomOption2Value;
+            CustomText1Value = referral.CustomText1Value;
+            CustomText2Value = referral.CustomText2Value;
+            CustomText3Value = referral.CustomText3Value;
+        }
     }
 }

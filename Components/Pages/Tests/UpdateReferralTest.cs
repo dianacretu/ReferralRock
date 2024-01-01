@@ -10,9 +10,9 @@ namespace ReferralRock.Components.Pages.Tests
         public ReferralApiResponse CreateReferralApiResponseMock()
         {
 
-            var mockedReferrals = new List<Referral>
+            var mockedReferrals = new List<ReceivedReferral>
             {
-                new Referral { Id = "1", DisplayName = "John Doe", FirstName = "John", Email="john.doe@example.com" },
+                new ReceivedReferral { Id = "1", DisplayName = "John Doe", FirstName = "John", Email="john.doe@example.com" },
             };
 
             var mockApiResponse = new ReferralApiResponse
@@ -32,7 +32,7 @@ namespace ReferralRock.Components.Pages.Tests
             var mockApiResponse = new NewReferralApiResponse
             {
                 Message = "Succes",
-                Referral = new Referral
+                Referral = new ReceivedReferral
                 {
                     FirstName = "John",
                     LastName = "Doe",
@@ -80,7 +80,7 @@ namespace ReferralRock.Components.Pages.Tests
         {
             var mockMyService = new Mock<IPageModelWithHttpClient>();
             mockMyService.Setup(x => x.GetReferrals("id_member","id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
-            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<Referral>())).ReturnsAsync(UpdateQueryResponseMock());
+            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<ReceivedReferral>())).ReturnsAsync(UpdateQueryResponseMock());
 
             using var ctx = new TestContext();
             ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
@@ -103,7 +103,7 @@ namespace ReferralRock.Components.Pages.Tests
         {
             var mockMyService = new Mock<IPageModelWithHttpClient>();
             mockMyService.Setup(x => x.GetReferrals("id_member", "id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
-            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<Referral>())).ReturnsAsync(UpdateQueryResponseMock());
+            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<ReceivedReferral>())).ReturnsAsync(UpdateQueryResponseMock());
 
             using var ctx = new TestContext();
             ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);
@@ -126,7 +126,7 @@ namespace ReferralRock.Components.Pages.Tests
         {
             var mockMyService = new Mock<IPageModelWithHttpClient>();
             mockMyService.Setup(x => x.GetReferrals("id_member", "id_referral", null, null)).ReturnsAsync(CreateReferralApiResponseMock());
-            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<Referral>())).ReturnsAsync(UpdateQueryResponseMockFailed());
+            mockMyService.Setup(x => x.UpdateReferral("id_referral", It.IsAny<ReceivedReferral>())).ReturnsAsync(UpdateQueryResponseMockFailed());
 
             using var ctx = new TestContext();
             ctx.Services.AddSingleton<IPageModelWithHttpClient>(mockMyService.Object);

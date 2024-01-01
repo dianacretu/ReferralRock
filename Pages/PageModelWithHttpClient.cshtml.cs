@@ -25,7 +25,7 @@ public class PageModelWithHttpClient : PageModel, IPageModelWithHttpClient
         return httpClient;
     }
 
-    public async Task<MemberApiResponse> GetMembers(string memberId = null, int? offset = null, int? count = null)
+    public async Task<MemberApiResponse> GetMembers(string? memberId = null, int? offset = null, int? count = null)
     {
         var parameters = new Dictionary<string, string>
             {
@@ -60,7 +60,7 @@ public class PageModelWithHttpClient : PageModel, IPageModelWithHttpClient
         }
     }
 
-    public async Task<ReferralApiResponse> GetReferrals(string memberId, string query = null, int? offset = null, int? count = null)
+    public async Task<ReferralApiResponse> GetReferrals(string memberId, string? query = null, int? offset = null, int? count = null)
     {
         var parameters = new Dictionary<string, string>
         {
@@ -156,7 +156,7 @@ public class PageModelWithHttpClient : PageModel, IPageModelWithHttpClient
         }
     }
 
-    public async Task<UpdateQueryResponse> UpdateReferral(string referralId, Referral referral)
+    public async Task<UpdateQueryResponse> UpdateReferral(string referralId, ReceivedReferral referral)
     {
         var apiUrl = $"api/referral/update";
 

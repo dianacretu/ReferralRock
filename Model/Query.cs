@@ -41,7 +41,7 @@
     public class UpdateQuery
     {
         public Info query { get; set; }
-        public Referral referral { get; set; }
+        public ReceivedReferral referral { get; set; }
     }
     public class ResultInfo 
     {
@@ -51,7 +51,7 @@
     public class UpdateQueryResponse
     {
         public Info query { get; set; }
-        public Referral referral { get; set; }
+        public ReceivedReferral referral { get; set; }
         public ResultInfo resultInfo { get; set; }
     }
 }

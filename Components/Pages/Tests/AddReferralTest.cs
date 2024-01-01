@@ -32,7 +32,7 @@ namespace ReferralRock.Components.Pages.Tests
             var mockApiResponse = new NewReferralApiResponse
             {
                 Message = "Success",
-                Referral = new Referral
+                Referral = new ReceivedReferral
                 {
                     FirstName = "John",
                     LastName = "Doe",

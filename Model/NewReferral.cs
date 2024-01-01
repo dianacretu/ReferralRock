@@ -6,7 +6,7 @@ namespace ReferralRock.Model
     public class NewReferralApiResponse
     {
         public string Message { get; set; }
-        public Referral Referral { get; set; }
+        public ReceivedReferral Referral { get; set; }
     }
 
     public class NewReferral
@@ -84,6 +84,30 @@ namespace ReferralRock.Model
         [MaxLength(13, ErrorMessage = "Status should not be longer than 50 characters.")]
         [RegularExpression("^(pending|qualified|approved|denied)$", ErrorMessage = "Invalid value. Status can be 'pending', 'qualified', 'approved', or 'denied'.")]
         public string Status { get; set; }
+
+        public void FromReceivedReferral(ReceivedReferral referral)
+        {
+            FirstName = referral.FirstName;
+            LastName = referral.LastName;
+            Email = referral.Email;
+            PhoneNumber = referral.PhoneNumber;
+            PreferredContact = referral.PreferredContact;
+            ExternalIdentifier = referral.ExternalIdentifier;
+            Amount = referral.Amount.ToString();
+            CompanyName = referral.CompanyName;
+            Note = referral.Note;
+            PublicNote = referral.PublicNote;
+            CustomOption1Name = referral.CustomOption1Name;
+            CustomOption2Name = referral.CustomOption2Name;
+            CustomText1Name = referral.CustomText1Name;
+            CustomText2Name = referral.CustomText2Name;
+            CustomText3Name = referral.CustomText3Name;
+            CustomOption1Value = referral.CustomOption1Value;
+            CustomOption2Value = referral.CustomOption2Value;
+            CustomText1Value = referral.CustomText1Value;
+            CustomText2Value = referral.CustomText2Value;
+            CustomText3Value = referral.CustomText3Value;
+        }
     }
 
 }

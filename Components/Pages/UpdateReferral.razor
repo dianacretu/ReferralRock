@@ -177,7 +177,7 @@
 
         <div class="form-group row mb-3">
             <div class="col-sm-4">
-                <button class="btn btn-primary" type="submit" @onclick="SubmitForm" >Submit</button>
+                <button class="btn btn-primary" type="submit" >Submit</button>
             </div>
         </div>
 
@@ -193,12 +193,14 @@ else
     [Parameter] public string MemberId { get; set; }
     [Parameter] public string ReferralId { get; set; }
     [SupplyParameterFromForm]
-    private Referral referral { get; set; }
+    private ReceivedReferral receivedReferral { get; set; }
+    private NewReferral referral { get; set; }
     private string ErrorMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ReferralApiResponse response = await PageModelWithHttpClient.GetReferrals(MemberId, ReferralId);
+        
         if (response.Referrals == null)
         {
             ErrorMessage = response.Message;
@@ -210,7 +212,9 @@ else
             throw new Exception("List is expected to have one referral.");
         }
 
-        referral = response.Referrals[0];
+        referral = new NewReferral();
+        referral.FromReceivedReferral(response.Referrals[0]);
+        receivedReferral = response.Referrals[0];
     }
 
     private async Task SubmitForm()
@@ -220,7 +224,8 @@ else
             throw new Exception("Referral should not be null.");
         }
 
-        UpdateQueryResponse response = await PageModelWithHttpClient.UpdateReferral(ReferralId, referral);
+        receivedReferral.FromNewReferral(referral);
+        UpdateQueryResponse response = await PageModelWithHttpClient.UpdateReferral(ReferralId, receivedReferral);
         if (response.resultInfo.Status != "Succeeded")
         {
             ErrorMessage = response.resultInfo.Message;
