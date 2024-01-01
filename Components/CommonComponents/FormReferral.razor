@@ -1,0 +1,188 @@
+﻿@using ReferralRock.Model
+
+<EditForm Model="@referral" OnValidSubmit=@CallAction FormName=@FormName>
+    <DataAnnotationsValidator />
+
+    <div class="form-group row mb-3">
+        <label for="firstName" class="col-sm-2 col-form-label">First name*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="firstName" @bind-Value="@referral.FirstName" />
+            <ValidationMessage For="@(() => referral.FirstName)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="lastName" class="col-sm-2 col-form-label">Last name*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="lastName" @bind-Value="@referral.LastName" />
+            <ValidationMessage For="@(() => referral.LastName)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="email" class="col-sm-2 col-form-label">Email*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="email" type="text" @bind-Value="@referral.Email" />
+            <ValidationMessage For="@(() => referral.Email)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="phoneNumber" class="col-sm-2 col-form-label">Phone number*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="phoneNumber" type="text" @bind-Value="@referral.PhoneNumber" />
+            <ValidationMessage For="@(() => referral.PhoneNumber)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="preferredContact" class="col-sm-2 col-form-label">Preferred contact:</label>
+        <div class="col-sm-4">
+            <InputSelect class="form-control" id="preferredContact" @bind-Value="@referral.PreferredContact">
+                <option value="email">Email</option>
+                <option value="callMorning">Call Morning</option>
+                <option value="callAfternoon">Call Afternoon</option>
+                <option value="callEvening">Call Evening</option>
+            </InputSelect>
+            <ValidationMessage For="@(() => referral.PreferredContact)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="externalIdentifier" class="col-sm-2 col-form-label">External identifier*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="externalIdentifier" type="text" @bind-Value="@referral.ExternalIdentifier" />
+            <ValidationMessage For="@(() => referral.ExternalIdentifier)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="amount" class="col-sm-2 col-form-label">Amount*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="amount" type="number" step="0.01" @bind-Value="@referral.Amount" />
+            <ValidationMessage For="@(() => referral.Amount)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="companyName" class="col-sm-2 col-form-label">Company name*:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="companyName" type="text" @bind-Value="@referral.CompanyName" />
+            <ValidationMessage For="@(() => referral.CompanyName)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="note" class="col-sm-2 col-form-label">Note:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="note" type="text" @bind-Value="@referral.Note" />
+            <ValidationMessage For="@(() => referral.Note)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="publicNote" class="col-sm-2 col-form-label">Public note:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="publicNote" type="text" @bind-Value="@referral.PublicNote" />
+            <ValidationMessage For="@(() => referral.PublicNote)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customOption1Name" class="col-sm-2 col-form-label">Custom option1 name:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customOption1Name" type="text" @bind-Value="@referral.CustomOption1Name" />
+            <ValidationMessage For="@(() => referral.CustomOption1Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customOption2Name" class="col-sm-2 col-form-label">Custom option2 name:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customOption2Name" type="text" @bind-Value="@referral.CustomOption2Name" />
+            <ValidationMessage For="@(() => referral.CustomOption2Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText1Name" class="col-sm-2 col-form-label">Custom text1 name:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText1Name" type="text" @bind-Value="@referral.CustomText1Name" />
+            <ValidationMessage For="@(() => referral.CustomText1Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText2Name" class="col-sm-2 col-form-label">Custom text2 name:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText2Name" type="text" @bind-Value="@referral.CustomText2Name" />
+            <ValidationMessage For="@(() => referral.CustomText2Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText3Name" class="col-sm-2 col-form-label">Custom text3 name:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText3Name" type="text" @bind-Value="@referral.CustomText3Name" />
+            <ValidationMessage For="@(() => referral.CustomText3Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customOption1Value" class="col-sm-2 col-form-label">Custom option1 value:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customOption1Value" type="text" @bind-Value="@referral.CustomOption1Value" />
+            <ValidationMessage For="@(() => referral.CustomOption1Value)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customOption2Value" class="col-sm-2 col-form-label">Custom option2 value:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customOption2Value" type="text" @bind-Value="@referral.CustomOption2Value" />
+            <ValidationMessage For="@(() => referral.CustomOption2Value)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText1Value" class="col-sm-2 col-form-label">Custom text1 value:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText1Value" type="text" @bind-Value="@referral.CustomText1Value" />
+            <ValidationMessage For="@(() => referral.CustomText1Value)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText2Value" class="col-sm-2 col-form-label">Custom text2 value:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText2Value" type="text" @bind-Value="@referral.CustomText2Value" />
+            <ValidationMessage For="@(() => referral.CustomText2Value)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="customText3Value" class="col-sm-2 col-form-label">Custom text3 value:</label>
+        <div class="col-sm-4">
+            <InputText class="form-control" id="customText3Value" type="text" @bind-Value="@referral.CustomText3Value" />
+            <ValidationMessage For="@(() => referral.CustomText3Value)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <div class="col-sm-4">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public NewReferral referral { get; set; }
+    [Parameter] public Func<Task> Action { get; set; }
+    [Parameter] public string FormName { get; set; }
+
+    private void CallAction()
+    {
+        Action?.Invoke();
+    }
+}
