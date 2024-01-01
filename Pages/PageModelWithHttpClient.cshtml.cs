@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using ReferralRock.Model;
+using ReferralRock.Pages;
 using System.Text;
 using System.Text.Json;
 
 
-public class PageModelWithHttpClient : PageModel
+public class PageModelWithHttpClient : PageModel, IPageModelWithHttpClient
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;

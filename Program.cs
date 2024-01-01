@@ -1,4 +1,5 @@
 using ReferralRock.Components;
+using ReferralRock.Pages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddHttpClient("client", client =>
     client.BaseAddress = new Uri("https://api.referralrock.com/");
 });
 
-builder.Services.AddTransient<PageModelWithHttpClient>();
+builder.Services.AddTransient<IPageModelWithHttpClient, PageModelWithHttpClient>();
 
 var app = builder.Build();
 

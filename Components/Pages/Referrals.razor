@@ -1,6 +1,6 @@
 ﻿@using System.Text.Json
 @using ReferralRock.Model
-@inject PageModelWithHttpClient PageModelWithHttpClient
+@inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
 @page "/referrals/{memberId}"
 @rendermode InteractiveServer
@@ -40,7 +40,7 @@ else
                     <td>@referral.DisplayName</td>
                     <td>@referral.Email</td>
                     <td>
-                        <button class="btn btn-primary" @onclick="() => UpdateReferral(referral.Id)">Update</button>
+                        <button class="btn btn-primary" @onclick="() => NavigateToUpdateReferral(referral.Id)">Update</button>
                     </td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => DeleteReferral(referral.Id)">Delete</button>
@@ -63,7 +63,7 @@ else
     </nav>
 }
 
-<button class="btn btn-primary" @onclick="NavigateToAnotherPage">Add new referral</button>
+<button class="btn btn-primary" @onclick="NavigateToAddReferral">Add new referral</button>
 
 @code {
     [Parameter] public string MemberId { get; set; }
@@ -91,12 +91,12 @@ else
         referrals = response.Referrals;
     }
 
-    protected void NavigateToAnotherPage()
+    protected void NavigateToAddReferral()
     {
         NavigationManager.NavigateTo($"referrals/{MemberId}/new", forceLoad: true);
     }
 
-    protected void UpdateReferral(string referralId)
+    protected void NavigateToUpdateReferral(string referralId)
     {
         NavigationManager.NavigateTo($"referrals/{MemberId}/update/{referralId}", forceLoad: true);
     }

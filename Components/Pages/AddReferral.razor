@@ -2,7 +2,7 @@
 @using ReferralRock.Model
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
-@inject PageModelWithHttpClient PageModelWithHttpClient
+@inject IPageModelWithHttpClient PageModelWithHttpClient
 @inject NavigationManager NavigationManager
 @page "/referrals/{memberId}/new"
 @rendermode InteractiveServer
@@ -233,7 +233,6 @@ else
         }
 
         referral.ReferralCode = member.ReferralCode;
-        Console.WriteLine(referral.FirstName);
         NewReferralApiResponse response = await PageModelWithHttpClient.CreateReferral(referral, MemberId);
         if (response.Referral == null)
         {
