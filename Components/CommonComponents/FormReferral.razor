@@ -4,7 +4,7 @@
     <DataAnnotationsValidator />
 
     <div class="form-group row mb-3">
-        <label for="firstName" class="col-sm-2 col-form-label">First name*:</label>
+        <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="firstName" @bind-Value="@referral.FirstName" />
             <ValidationMessage For="@(() => referral.FirstName)" />
@@ -12,7 +12,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="lastName" class="col-sm-2 col-form-label">Last name*:</label>
+        <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="lastName" @bind-Value="@referral.LastName" />
             <ValidationMessage For="@(() => referral.LastName)" />
@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="email" class="col-sm-2 col-form-label">Email*:</label>
+        <label for="email" class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="email" type="text" @bind-Value="@referral.Email" />
             <ValidationMessage For="@(() => referral.Email)" />
@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="phoneNumber" class="col-sm-2 col-form-label">Phone number*:</label>
+        <label for="phoneNumber" class="col-sm-2 col-form-label">Phone number:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="phoneNumber" type="text" @bind-Value="@referral.PhoneNumber" />
             <ValidationMessage For="@(() => referral.PhoneNumber)" />
@@ -49,7 +49,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="externalIdentifier" class="col-sm-2 col-form-label">External identifier*:</label>
+        <label for="externalIdentifier" class="col-sm-2 col-form-label">External identifier:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="externalIdentifier" type="text" @bind-Value="@referral.ExternalIdentifier" />
             <ValidationMessage For="@(() => referral.ExternalIdentifier)" />
@@ -57,7 +57,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="amount" class="col-sm-2 col-form-label">Amount*:</label>
+        <label for="amount" class="col-sm-2 col-form-label">Amount:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="amount" type="number" step="0.01" @bind-Value="@referral.Amount" />
             <ValidationMessage For="@(() => referral.Amount)" />
@@ -65,7 +65,7 @@
     </div>
 
     <div class="form-group row mb-3">
-        <label for="companyName" class="col-sm-2 col-form-label">Company name*:</label>
+        <label for="companyName" class="col-sm-2 col-form-label">Company name:</label>
         <div class="col-sm-4">
             <InputText class="form-control" id="companyName" type="text" @bind-Value="@referral.CompanyName" />
             <ValidationMessage For="@(() => referral.CompanyName)" />
